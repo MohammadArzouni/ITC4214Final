@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% include 'navbar.html' %}
+<head>
+    <title>User Registration</title>
+	<link rel="stylesheet" href="{% static 'users/styles.css' %}">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="padding-top: 60px;">
+	<div class="center">
+    <h1>Account Registration</h1>
+	</div>
+    <form method="post">
+        {% csrf_token %} 
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

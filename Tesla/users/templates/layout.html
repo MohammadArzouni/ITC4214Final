@@ -1,0 +1,16 @@
+{% load static %}
+<html>
+<head>
+  <title>{% block title %}Profile{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'users/profilestyles.css' %}">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body class="bg-dark" style="padding-top: 60px;">
+  <div id="content" name="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }} Detail</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+        .product-image {
+            max-width: 100%; 
+            height: auto; 
+        }
+		
+		.recommendation-title {
+            font-size: 20px;
+            color: white;
+			margin-top: 20px;
+        }
+
+        .recommendation-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .recommendation-card-title {
+            font-size: 18px;
+            color: #212529;
+        }
+
+        .recommendation-card-text {
+            font-size: 16px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+
+	{% include 'navbar.html' %}
+	
+    <div class="container bg-dark" style="padding-top: 60px;">
+        <div class="jumbotron">
+            <div class="welcome text-center">
+                <h1 class="display-4">{{ product.name }}</h1>
+                <p class="lead">Description: {{ product.description }}</p>
+                <p class="lead">Price: ${{ product.price }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            </div>
+
+			<h1 class="display-4 recommendation-title">Recommendation:</h1>
+
+            <div class="row">
+				<div class="col-lg-4 col-md-6 col-sm-12">
+					<div class="card mb-3 recommendation-card">
+						<img src="{{ mobile_connector.image.url }}" class="card-img-top product-image" alt="{{ mobile_connector.name }}">
+						<div class="card-body">
+							<h5 class="card-title recommendation-card-title">{{ mobile_connector.name }}</h5>
+							<p class="card-text recommendation-card-text">{{ mobile_connector.description }}</p>
+							<p class="card-text recommendation-card-text">Price: ${{ mobile_connector.price }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+                   

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+<head>
+	{% include 'navbar.html'%}
+    <title>Tesla</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+    .star {
+        color: #ddd;
+        cursor: pointer;
+    }
+
+    .star.star-hover,
+    .star.star-filled {
+        color: gold;
+    }
+</style>
+
+</head>
+<body class = "bg-dark">
+		
+	<div class="container bg-dark" style="padding-top: 60px;">	
+		<div class="jumbotron">
+			<div class = "welcome text-center">
+				<h1 class="display-4">Tesla's Catalog</h1>
+				<p class="lead">Welcome to the home page of Arzouni's variation of Tesla. Feel free to explore our collection of high-quality electric vehicles and accessories.</p>
+			</div>
+		</div>
+		
+		<form class="form-inline mb-3 justify-content-center" method="get" action="{% url 'home' %}">
+			<input class="form-control mr-sm-2" type="search" placeholder="Search by name" aria-label="Search" name="q">
+			<input class="form-control mr-sm-2" type="number" placeholder="Max Price" name="max_price">
+			<button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+		</form>
+		
+		<div class="row">
+			{% for product in products %}
+			<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="card mb-3">
+					<a href="{% url 'products:product_detail' product.pk %}">
+						<img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+						<div class="card-body">
+							<h5 class="card-title">
+							<a href="{% url 'products:product_detail' product.pk %}">{{ product.name }}</a>
+							</h5>
+							<p class="card-text">{{ product.description }}</p>
+							<p class="card-text">Price: ${{ product.price }}</p>
+							<div class="star-rating" data-product-id="{{ product.id }}">
+								<span class="star">&#9733;</span>
+								<span class="star">&#9733;</span>
+								<span class="star">&#9733;</span>
+								<span class="star">&#9733;</span>
+								<span class="star">&#9733;</span>
+							</div>
+							<div class="rating-message" style="display: none;"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".star-rating").on("mouseenter", ".star", function () {
+            $(this).addClass("star-hover");
+            $(this).prevAll().addClass("star-hover");
+        });
+
+        $(".star-rating").on("mouseleave", ".star", function () {
+            $(this).removeClass("star-hover");
+            $(this).prevAll().removeClass("star-hover");
+        });
+
+        $(".star-rating").on("click", ".star", function () {
+            var productID = $(this).parent().data("product-id");
+            var ratingValue = $(this).index() + 1;
+
+            // Remove "star-filled" class from all stars
+            $(this).parent().children().removeClass("star-filled");
+
+            // Add "star-filled" class to the clicked star and all previous stars
+            $(this).addClass("star-filled");
+            $(this).prevAll().addClass("star-filled");
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'products:rate_product' %}",
+                data: {
+                    product_id: productID,
+                    rating: ratingValue,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                },
+                success: function () {
+                    $(this).siblings(".rating-message").text("Favorited Successfully").show();
+                },
+                error: function () {
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
